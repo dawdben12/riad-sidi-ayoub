@@ -13,6 +13,8 @@ import {
   WellnessItem,
   DrinkItem,
   WHATSAPP_NUMBER,
+  RIAD_ROOMS,
+  HAMMAM_TIME_SLOTS,
 } from "@/data/conciergeData";
 
 export type BookingKind =
@@ -50,7 +52,7 @@ export default function BookingModal({
   const t = uiTranslations[lang];
 
   const [guestName, setGuestName] = useState("");
-  const [roomNumber, setRoomNumber] = useState("");
+  const [roomName, setRoomName] = useState("");
   const [preferredDate, setPreferredDate] = useState("");
   const [preferredTime, setPreferredTime] = useState("");
   const [guestsCount, setGuestsCount] = useState(2);
@@ -86,7 +88,7 @@ export default function BookingModal({
     } else if (payload.kind === "drink") {
       setPreferredTime("17:00");
     } else if (payload.kind === "wellness") {
-      setPreferredTime("16:00");
+      setPreferredTime("11:00");
     } else if (payload.kind === "excursion") {
       setPreferredTime("08:00");
     }
@@ -183,8 +185,10 @@ export default function BookingModal({
         }
       }
       lines.push(`Total : ${totalStr}`);
-      lines.push(`Nom : ${guestName}`);
-      lines.push(`Chambre : ${roomNumber}`);
+      lines.push(`Nom : ${guestName.trim()}`);
+      if (roomName) {
+        lines.push(`Chambre : ${roomName}`);
+      }
       lines.push(`Personnes : ${guestsCount}`);
       lines.push(`Date & Heure : ${preferredDate} ${preferredTime}`);
       if (notes.trim()) lines.push(`Notes : ${notes.trim()}`);
@@ -209,8 +213,10 @@ export default function BookingModal({
         }
       }
       lines.push(`Total: ${totalStr}`);
-      lines.push(`Huésped: ${guestName}`);
-      lines.push(`Habitación: ${roomNumber}`);
+      lines.push(`Nombre: ${guestName.trim()}`);
+      if (roomName) {
+        lines.push(`Habitación: ${roomName}`);
+      }
       lines.push(`Personas: ${guestsCount}`);
       lines.push(`Fecha y Hora: ${preferredDate} ${preferredTime}`);
       if (notes.trim()) lines.push(`Notas: ${notes.trim()}`);
@@ -235,8 +241,10 @@ export default function BookingModal({
         }
       }
       lines.push(`Total: ${totalStr}`);
-      lines.push(`Guest Name: ${guestName}`);
-      lines.push(`Room Number: ${roomNumber}`);
+      lines.push(`Name: ${guestName.trim()}`);
+      if (roomName) {
+        lines.push(`Room: ${roomName}`);
+      }
       lines.push(`Guests: ${guestsCount}`);
       lines.push(`Date & Time: ${preferredDate} ${preferredTime}`);
       if (notes.trim()) lines.push(`Notes: ${notes.trim()}`);
@@ -433,7 +441,7 @@ export default function BookingModal({
               </div>
             )}
 
-          {/* Guest Name & Room Number */}
+          {/* Guest Name (Required) & Room Name Selector (Optional) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
               <label className="block text-xs font-medium text-[#63615C] mb-1">
@@ -451,16 +459,20 @@ export default function BookingModal({
 
             <div>
               <label className="block text-xs font-medium text-[#63615C] mb-1">
-                {t.modalRoom} *
+                {t.modalRoom}
               </label>
-              <input
-                type="text"
-                required
-                value={roomNumber}
-                onChange={(e) => setRoomNumber(e.target.value)}
-                placeholder={t.modalRoomPlaceholder}
+              <select
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
                 className="w-full rounded-lg border border-[#E6E4DF] bg-white px-3.5 py-2.5 text-sm text-[#1A1A1A] focus:border-[#1A1A1A] focus:outline-none"
-              />
+              >
+                <option value="">{t.modalRoomPlaceholder}</option>
+                {RIAD_ROOMS.map((room) => (
+                  <option key={room} value={room}>
+                    {room}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -483,12 +495,26 @@ export default function BookingModal({
               <label className="block text-xs font-medium text-[#63615C] mb-1">
                 {t.modalTime}
               </label>
-              <input
-                type="time"
-                value={preferredTime}
-                onChange={(e) => setPreferredTime(e.target.value)}
-                className="w-full rounded-lg border border-[#E6E4DF] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#1A1A1A] focus:outline-none"
-              />
+              {payload.kind === "wellness" ? (
+                <select
+                  value={preferredTime}
+                  onChange={(e) => setPreferredTime(e.target.value)}
+                  className="w-full rounded-lg border border-[#E6E4DF] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#1A1A1A] focus:outline-none"
+                >
+                  {HAMMAM_TIME_SLOTS.map((slot) => (
+                    <option key={slot} value={slot}>
+                      {slot}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="time"
+                  value={preferredTime}
+                  onChange={(e) => setPreferredTime(e.target.value)}
+                  className="w-full rounded-lg border border-[#E6E4DF] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#1A1A1A] focus:outline-none"
+                />
+              )}
             </div>
 
             <div>

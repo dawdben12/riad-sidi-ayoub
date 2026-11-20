@@ -64,8 +64,129 @@ export interface ExcursionItem {
 export const WHATSAPP_NUMBER = "212655614801";
 export const CONTACT_PHONE_DISPLAY = "+212 655 61 48 01";
 export const CONTACT_EMAIL = "riadsidiayoub2013@gmail.com";
+export const INSTAGRAM_URL =
+  "https://www.instagram.com/riad.sidi.ayoub?dmpr=MXdraWhlMG14dHA3ag==";
+
+export const RIAD_ROOMS = [
+  "Almoravide",
+  "Almohade",
+  "Mérinide",
+  "Princesse",
+  "Saadienne",
+  "Alaouite",
+  "Royale",
+] as const;
+
+export const HAMMAM_TIME_SLOTS = [
+  "10:00",
+  "10:30",
+  "11:00",
+  "11:30",
+  "12:00",
+  "12:30",
+  "13:00",
+  "13:30",
+  "14:00",
+  "14:30",
+  "15:00",
+  "15:30",
+  "16:00",
+] as const;
 
 export const FALLBACK_HERO_IMAGE = "/images/riad-patio.jpg";
+
+export interface GuestbookEntry {
+  id: string;
+  name: string;
+  date: string;
+  text: string;
+  photo?: string;
+}
+
+export interface OfficialWelcomePost {
+  name: string;
+  date: LocalizedText;
+  text: LocalizedText;
+  photo: string;
+}
+
+export const officialWelcomePost: OfficialWelcomePost = {
+  name: "Riad Sidi Ayoub",
+  date: {
+    en: "Pinned Welcome • Marrakech",
+    fr: "Mot de Bienvenue • Marrakech",
+    es: "Mensaje de Bienvenida • Marrakech",
+  },
+  text: {
+    en: "Welcome to Riad Sidi Ayoub! Our entire team — and Lalla 👑 — are delighted to host you in Marrakech. Feel free to leave a note, a favorite memory, or a photo from your stay below to share on our Wall of Memories.",
+    fr: "Bienvenue au Riad Sidi Ayoub ! Toute notre équipe — ainsi que Lalla 👑 — est ravie de vous accueillir à Marrakech. N'hésitez pas à laisser un mot, un souvenir ou une photo de votre séjour ci-dessous sur notre Mur des Souvenirs.",
+    es: "¡Bienvenidos a Riad Sidi Ayoub! Todo nuestro equipo — y Lalla 👑 — estamos encantados de recibirles en Marrakech. No duden en dejar una nota, un recuerdo o una foto de su estancia a continuación en nuestro Muro de los Recuerdos.",
+  },
+  photo: "/images/riad-patio.jpg",
+};
+
+export interface LallaCardContent {
+  header: string;
+  subHeader: string;
+  tagline: string;
+  nameLabel: string;
+  nameValue: string;
+  ageLabel: string;
+  ageValue: string;
+  roleLabel: string;
+  roleValue: string;
+  missionsLabel: string;
+  missionsValue: string;
+  signatureLabel: string;
+}
+
+export const lallaCard: Record<Language, LallaCardContent> = {
+  en: {
+    header: "KINGDOM OF MOROCCO",
+    subHeader: "OFFICIAL FELINE ID CARD",
+    tagline: "Riad Sidi Ayoub Resident",
+    nameLabel: "Name:",
+    nameValue: "Lalla 👑",
+    ageLabel: "Age:",
+    ageValue: "6 Years Old 🐾",
+    roleLabel: "Role:",
+    roleValue: "Chief Comfort & Welcome Officer",
+    missionsLabel: "Daily Duties:",
+    missionsValue:
+      "Sunbathing in the courtyard, inspecting the best chairs, and collecting gentle pets from guests.",
+    signatureLabel: "Official Signature",
+  },
+  fr: {
+    header: "ROYAUME DU MAROC",
+    subHeader: "CARTE D'IDENTITÉ FÉLINE OFFICIELLE",
+    tagline: "Résidente du Riad Sidi Ayoub",
+    nameLabel: "Nom :",
+    nameValue: "Lalla 👑",
+    ageLabel: "Âge :",
+    ageValue: "6 Ans 🐾",
+    roleLabel: "Fonction :",
+    roleValue: "Directrice des Câlins & Siestes",
+    missionsLabel: "Missions :",
+    missionsValue:
+      "Siestes au soleil dans le patio, inspection des meilleurs fauteuils et accueil chaleureux des voyageurs.",
+    signatureLabel: "Signature Officielle",
+  },
+  es: {
+    header: "REINO DE MARRUECOS",
+    subHeader: "TARJETA DE IDENTIDAD FELINA OFICIAL",
+    tagline: "Residente de Riad Sidi Ayoub",
+    nameLabel: "Nombre:",
+    nameValue: "Lalla 👑",
+    ageLabel: "Edad:",
+    ageValue: "6 Años 🐾",
+    roleLabel: "Cargo:",
+    roleValue: "Directora de Siestas y Bienvenida",
+    missionsLabel: "Misiones:",
+    missionsValue:
+      "Tomar el sol en el patio, supervisar las mejores sillas y recibir mimos de los huéspedes.",
+    signatureLabel: "Firma Oficial",
+  },
+};
 
 export const startersList: DishItem[] = [
   {
@@ -81,7 +202,7 @@ export const startersList: DishItem[] = [
       fr: "Tomates fraîches finement coupées, concombres, oignons doux, herbes fraîches et huile d'olive du Maroc.",
       es: "Tomates frescos finamente picados, pepinos, cebolla roja, hierbas aromáticas y aceite de oliva marroquí.",
     },
-    image: "/images/menu/salade-marocaine.jpg",
+    image: "/images/menu/moroccan-salad.jpg",
   },
   {
     id: "starter-mixed-salad",
@@ -96,7 +217,7 @@ export const startersList: DishItem[] = [
       fr: "Assortiment de légumes frais du marché, crudités de saison, olives et vinaigrette maison.",
       es: "Surtido de verduras frescas del mercado, hortalizas de temporada, aceitunas y aliño de la casa.",
     },
-    image: "/images/menu/salade-variee.jpg",
+    image: "/images/menu/varied-salad.jpg",
   },
   {
     id: "starter-soup",
@@ -129,7 +250,7 @@ export const menuSet1Mains: DishItem[] = [
       fr: "Viande tendre mijotée lentement en tajine avec légumes frais du marché et épices.",
       es: "Tajín de ternera o cordero cocinado a fuego lento con verduras frescas del mercado y especias tradicionales.",
     },
-    image: "/images/menu/tajine-viande-legumes.jpg",
+    image: "/images/menu/vegetables-tajine.jpg",
   },
   {
     id: "main-tagine-prunes",
@@ -164,17 +285,17 @@ export const menuSet1Mains: DishItem[] = [
   {
     id: "main-tagine-apricots-dates",
     name: {
-      en: "Tagine with Apricots & Dates",
+      en: "Tagine with Dates, Apricots & Walnuts",
       fr: "Tajine viande abricots dattes",
-      es: "Tajín de Carne con Albaricoques y Dátiles",
+      es: "Tajín de Carne con Dátiles y Nueces",
     },
     originalFr: "Tajine viande abricots dattes",
     description: {
-      en: "Braised meat tagine prepared with Saharan dates, apricots, and aromatic saffron sauce.",
-      fr: "Viande mijotée aux abricots confits et dattes douces dans une sauce parfumée.",
-      es: "Tajín de carne estofada con dátiles del oasis, albaricoques y salsa aromática de azafrán.",
+      en: "Braised meat tagine prepared with sweet Saharan dates, apricots, walnuts, and aromatic saffron sauce.",
+      fr: "Viande mijotée aux dattes douces, abricots confits et noix dans une sauce parfumée.",
+      es: "Tajín de carne estofada con dátiles del oasis, albaricoques, nueces y salsa aromática.",
     },
-    image: "/images/menu/tajine-abricots-noix.jpg",
+    image: "/images/menu/dates-walnuts-tajine.jpg",
   },
   {
     id: "main-tagine-figs",
@@ -431,34 +552,34 @@ export const drinksList: DrinkItem[] = [
   {
     id: "drink-sodas",
     name: {
-      en: "Soft Drinks / Lemonade (Coca, Fanta, Sprite, Schweppes...)",
-      fr: "Limonade (Coca, Fanta, Sprite, Schweppes...)",
-      es: "Refrescos (Coca-Cola, Fanta, Sprite, Schweppes...)",
+      en: "Local & Classic Sodas (Coca-Cola, Hawai, Poms...)",
+      fr: "Limonade (Coca-Cola, Hawai, Poms, Sprite...)",
+      es: "Refrescos Locales y Clásicos (Coca-Cola, Hawai, Poms...)",
     },
-    originalFr: "Limonade (Coca, Fanta, Sprite, Schweppes...)",
+    originalFr: "Limonade (Coca, Hawai, Poms, Sprite...)",
     description: {
-      en: "Chilled sodas and soft drinks of your choice.",
-      fr: "Boissons gazeuses fraîches au choix.",
-      es: "Refrescos fríos a su elección.",
+      en: "Chilled Moroccan & classic soft drinks including Coca-Cola, tropical Hawai, and sparkling apple Poms.",
+      fr: "Boissons gazeuses fraîches au choix : Coca-Cola, Hawai tropical, Poms ou limonade.",
+      es: "Refrescos fríos a elegir, incluyendo Coca-Cola, Hawai tropical y Poms de manzana.",
     },
     priceMad: 20,
-    image: "/images/items/drink-sodas.jpg",
+    image: "/images/menu/local-sodas.jpg",
   },
   {
     id: "drink-mineral-water",
     name: {
-      en: "Mineral Water 1.5L / Sparkling Water",
-      fr: "Eau Minérale 1.5L / Eau gazeuse",
-      es: "Agua Mineral 1.5L / Agua con Gas",
+      en: "Sidi Ali Mineral Water 1.5L / Sparkling Water",
+      fr: "Eau Minérale Sidi Ali 1.5L / Eau gazeuse",
+      es: "Agua Mineral Sidi Ali 1.5L / Agua con Gas",
     },
     originalFr: "Eau Minérale 1.5L / Eau gazeuse",
     description: {
-      en: "1.5L bottle of still mineral water or sparkling water.",
-      fr: "Grande bouteille d'eau minérale 1.5L ou eau gazeuse.",
-      es: "Botella grande de agua mineral natural de 1.5L o agua con gas.",
+      en: "Large 1.5L bottle of pure Moroccan Sidi Ali mineral water or sparkling water.",
+      fr: "Grande bouteille d'eau minérale naturelle Sidi Ali 1.5L ou eau gazeuse.",
+      es: "Botella grande de 1.5L de agua mineral natural marroquí Sidi Ali o agua con gas.",
     },
     priceMad: 20,
-    image: "/images/items/drink-mineral-water.jpg",
+    image: "/images/menu/sidi-ali.jpg",
   },
 ];
 
@@ -471,49 +592,49 @@ export const wellnessComboItem: WellnessItem = {
     es: "Ritual Exclusivo del Riad: Pack Hammam + Masaje",
   },
   tagline: {
-    en: "Complete Post-Medina Sanctuary • Save 50 MAD",
-    fr: "Sérénité Absolue Après la Médina • Économisez 50 MAD",
-    es: "Santuario Completo Tras la Medina • Ahorre 50 MAD",
+    en: "30 min Hammam + 30 min Massage • Save 50 MAD",
+    fr: "30 min Hammam + 30 min Massage • Économisez 50 MAD",
+    es: "30 min Hammam + 30 min Masaje • Ahorre 50 MAD",
   },
   priceMad: 350,
   originalPriceMad: 400,
   duration: {
-    en: "Approx. 1h 45m Complete Ritual",
-    fr: "Rituel Complet env. 1h 45",
-    es: "Ritual Completo aprox. 1h 45m",
+    en: "60 min (30 min + 30 min)",
+    fr: "60 min (30 min + 30 min)",
+    es: "60 min (30 min + 30 min)",
   },
   isCombo: true,
   description: {
-    en: "After hours of walking through Marrakech's vibrant souks, return to the quiet calm of Riad Sidi Ayoub for our complete restoration ritual: a traditional eucalyptus black-soap Hammam & kessa exfoliation followed seamlessly by a 60-minute full-body Moroccan argan oil massage.",
-    fr: "Après l'effervescence des souks de Marrakech, retrouvez le calme absolu du Riad Sidi Ayoub avec notre rituel complet : un Hammam traditionnel au savon noir et gommage au gant kessa, suivi d'un massage relaxant du corps entier aux huiles d'argan du Maroc.",
-    es: "Tras recorrer los vibrantes zocos de Marrakech, regrese a la serenidad de Riad Sidi Ayoub para disfrutar de nuestro ritual completo: un Hammam tradicional con jabón negro y exfoliación con guante kessa, seguido de un masaje relajante de cuerpo completo con aceite de argán.",
+    en: "After hours of walking through Marrakech's vibrant souks, return to the quiet calm of Riad Sidi Ayoub for our complete restoration ritual: a 30-minute traditional eucalyptus black-soap Hammam & kessa exfoliation followed seamlessly by a 30-minute relaxing Moroccan argan oil massage.",
+    fr: "Après l'effervescence des souks de Marrakech, retrouvez le calme absolu du Riad Sidi Ayoub avec notre rituel complet : 30 minutes de Hammam traditionnel au savon noir et gommage au gant kessa, suivies de 30 minutes de massage relaxant aux huiles d'argan du Maroc.",
+    es: "Tras recorrer los vibrantes zocos de Marrakech, regrese a la serenidad de Riad Sidi Ayoub para disfrutar de nuestro ritual completo: 30 minutos de Hammam tradicional con jabón negro y exfoliación con guante kessa, seguidos de 30 minutos de masaje relajante con aceite de argán.",
   },
   longDescription: {
-    en: "Designed as the ultimate transition from the lively streets of the Medina to the peaceful sanctuary of Riad Sidi Ayoub, our 350 MAD Hammam & Massage Combo Pack pairs both of our signature wellness rituals into one unhurried experience. Begin in the gentle warmth of our steam room where organic eucalyptus black soap (savon beldi) prepares your skin for a traditional kessa glove exfoliation. Once your skin is purified and muscles warmed, drift directly into a 60-minute full-body massage with warm Moroccan argan and orange-blossom oils, followed by fresh mint tea in the courtyard.",
-    fr: "Conçu comme une parenthèse de douceur après vos découvertes dans la Médina, le Pack Hammam + Massage à 350 MAD réunit nos deux soins emblématiques en une seule expérience harmonieuse au Riad Sidi Ayoub. Commencez par la chaleur apaisante du bain de vapeur avec l'application du savon beldi à l'eucalyptus et le gommage purifiant au gant kessa. Poursuivez immédiatement par une heure de massage enveloppant à l'huile d'argan tiède parfumée à la fleur d'oranger, avant de savourer un thé à la menthe dans le calme du patio.",
-    es: "Concebido como el refugio perfecto tras explorar la Medina de Marrakech, nuestro Pack Hammam + Masaje por 350 MAD combina los dos rituales esenciales de Riad Sidi Ayoub en una experiencia continua y serena. Comience con el vapor cálido del Hammam, la aplicación de jabón negro de eucalipto (savon beldi) y la exfoliación tradicional con guante kessa. Con la piel renovada y los músculos relajados, disfrute de un masaje de cuerpo completo de 60 minutos con aceite de argán tibio y flor de azahar, finalizando con un té a la menta en el patio.",
+    en: "Designed as the ultimate transition from the lively streets of the Medina to the peaceful sanctuary of Riad Sidi Ayoub, our 350 MAD Hammam & Massage Combo Pack pairs both of our signature 30-minute wellness rituals into one unhurried experience. Begin with 30 minutes in the gentle warmth of our traditional Hammam room with its gleaming copper bucket and marble bench where organic eucalyptus black soap (savon beldi) prepares your skin for a traditional kessa glove exfoliation. Once your skin is purified and muscles warmed, drift directly into a 30-minute relaxing massage with warm Moroccan argan and orange-blossom oils, followed by fresh mint tea in the courtyard.",
+    fr: "Conçu comme une parenthèse de douceur après vos découvertes dans la Médina, le Pack Hammam + Massage à 350 MAD réunit nos deux soins emblématiques de 30 minutes en une seule expérience harmonieuse au Riad Sidi Ayoub. Commencez par 30 minutes dans la chaleur apaisante du bain de vapeur traditionnel avec l'application du savon beldi à l'eucalyptus et le gommage purifiant au gant kessa. Poursuivez immédiatement par 30 minutes de massage enveloppant à l'huile d'argan tiède parfumée à la fleur d'oranger, avant de savourer un thé à la menthe dans le calme du patio.",
+    es: "Concebido como el refugio perfecto tras explorar la Medina de Marrakech, nuestro Pack Hammam + Masaje por 350 MAD combina los dos rituales esenciales de 30 minutos de Riad Sidi Ayoub en una experiencia continua y serena. Comience con 30 minutos en el vapor cálido del Hammam tradicional, la aplicación de jabón negro de eucalipto (savon beldi) y la exfoliación tradicional con guante kessa. Con la piel renovada y los músculos relajados, disfrute de un masaje relajante de 30 minutos con aceite de argán tibio y flor de azahar, finalizando con un té a la menta en el patio.",
   },
   highlights: {
     en: [
-      "Full Traditional Moroccan Hammam with eucalyptus Savon Beldi & Kessa exfoliation",
-      "60-minute soothing full-body massage with warm Moroccan Argan oil",
+      "30-minute Traditional Moroccan Hammam with eucalyptus Savon Beldi & Kessa exfoliation",
+      "30-minute soothing relaxing massage with warm Moroccan Argan oil",
       "Preferential package rate of 350 MAD per guest (instead of 400 MAD)",
       "Complimentary herbal or mint tea served in the Riad patio after your ritual",
     ],
     fr: [
-      "Hammam marocain complet au Savon Beldi à l'eucalyptus et gommage Kessa",
-      "Massage relaxant de 60 minutes du corps entier à l'huile d'Argan tiède",
+      "30 minutes de Hammam marocain au Savon Beldi à l'eucalyptus et gommage Kessa",
+      "30 minutes de massage relaxant à l'huile d'Argan tiède",
       "Tarif privilégié de 350 MAD par personne (au lieu de 400 MAD)",
       "Thé à la menthe ou infusion servie dans le patio après votre soin",
     ],
     es: [
-      "Hammam marroquí completo con jabón negro (Savon Beldi) y exfoliación Kessa",
-      "Masaje relajante de 60 minutos de cuerpo entero con aceite de Argán tibio",
+      "30 minutos de Hammam marroquí con jabón negro (Savon Beldi) y exfoliación Kessa",
+      "30 minutos de masaje relajante con aceite de Argán tibio",
       "Tarifa especial de 350 MAD por persona (en lugar de 400 MAD)",
       "Té a la menta o infusión relajante servida en el patio al finalizar",
     ],
   },
-  image: "/images/items/wellness-massage.jpg",
+  image: "/images/wellness/hammam.jpg",
 };
 
 export const wellnessList: WellnessItem[] = [
@@ -532,41 +653,41 @@ export const wellnessList: WellnessItem[] = [
     },
     priceMad: 200,
     duration: {
-      en: "45 – 60 min Ritual",
-      fr: "Rituel 45 – 60 min",
-      es: "Ritual 45 – 60 min",
+      en: "30 min",
+      fr: "30 min",
+      es: "30 min",
     },
     description: {
-      en: "Authentic Moroccan steam bath ritual with black soap (savon beldi) and kessa exfoliation to purify and relax the body.",
-      fr: "Bain de vapeur marocain authentique avec savon noir (savon beldi) et gommage au gant kessa pour purifier et détendre le corps.",
-      es: "Auténtico ritual de baño de vapor marroquí con jabón negro (savon beldi) y exfoliación con guante kessa para purificar y relajar el cuerpo.",
+      en: "30-minute authentic Moroccan steam bath ritual with black soap (savon beldi) and kessa exfoliation to purify and relax the body.",
+      fr: "Rituel de 30 minutes de bain de vapeur marocain authentique avec savon noir (savon beldi) et gommage au gant kessa pour purifier et détendre le corps.",
+      es: "Ritual de 30 minutos de baño de vapor marroquí auténtico con jabón negro (savon beldi) y exfoliación con guante kessa para purificar y relajar el cuerpo.",
     },
     longDescription: {
-      en: "Step into the timeless tranquility of our Riad's traditional Hammam. Enveloped in gentle steam, your skin is treated with natural olive-and-eucalyptus black soap (savon beldi), rich in vitamin E, followed by an invigorating full-body exfoliation using a traditional kessa glove. This centuries-old Moroccan purification ritual deeply cleanses pores, stimulates circulation, and leaves your body feeling weightless and renewed after a day in Marrakech.",
-      fr: "Plongez dans la sérénité intemporelle du Hammam traditionnel du Riad Sidi Ayoub. Dans une vapeur douce qui délasse les muscles, votre peau reçoit une application de savon noir naturel aux olives et à l'eucalyptus (savon beldi), suivie d'un gommage tonifiant au gant kessa. Ce rituel ancestral purifie l'épiderme en profondeur, libère les tensions et procure une sensation immédiate de légèreté.",
-      es: "Adéntrese en la calma atemporal del Hammam tradicional de Riad Sidi Ayoub. Envuelto en un suave vapor cálido, su piel se nutre con jabón negro natural de oliva y eucalipto (savon beldi), seguido de una exfoliación profunda con el guante tradicional kessa. Este ritual centenario marroquí purifica la piel, activa la circulación y devuelve una sensación de ligereza absoluta.",
+      en: "Step into the timeless tranquility of our Riad's traditional Moroccan Hammam for a 30-minute purifying ritual featuring warm tadelakt walls, dark marble seating, and traditional copper buckets. Enveloped in gentle steam, your skin is treated with natural olive-and-eucalyptus black soap (savon beldi), rich in vitamin E, followed by an invigorating exfoliation using a traditional kessa glove.",
+      fr: "Plongez dans la sérénité intemporelle du Hammam traditionnel du Riad Sidi Ayoub pour un soin purifiant de 30 minutes avec ses seaux en cuivre étincelants et son banc chauffé. Dans une vapeur douce qui délasse les muscles, votre peau reçoit une application de savon noir naturel aux olives et à l'eucalyptus (savon beldi), suivie d'un gommage tonifiant au gant kessa.",
+      es: "Adéntrese en la calma atemporal del Hammam tradicional de Riad Sidi Ayoub durante una sesión purificante de 30 minutos con sus cuencos de cobre brillante y bancos cálidos. Envuelto en un suave vapor cálido, su piel se nutre con jabón negro natural de oliva y eucalipto (savon beldi), seguido de una exfoliación profunda con el guante tradicional kessa.",
     },
     highlights: {
       en: [
-        "Private heated steam room prepared exclusively for your appointment",
+        "30-minute traditional Moroccan Hammam session (200 MAD)",
         "100% natural Moroccan olive & eucalyptus black soap (Savon Beldi)",
-        "Traditional Kessa glove exfoliation & warm rinsing ritual",
+        "Traditional Kessa glove exfoliation & warm copper-bucket rinsing ritual",
         "Quiet relaxation with fresh mint tea after your session",
       ],
       fr: [
-        "Hammam chauffé et préparé exclusivement pour votre créneau",
+        "Séance de 30 minutes de Hammam traditionnel marocain (200 MAD)",
         "Savon noir 100% naturel à l'olive et à l'eucalyptus (Savon Beldi)",
         "Gommage traditionnel au gant Kessa et rinçage apaisant",
         "Pause détente avec thé à la menthe dans le patio après le soin",
       ],
       es: [
-        "Sala de vapor preparada exclusivamente para su horario",
+        "Sesión de 30 minutos de Hammam tradicional marroquí (200 MAD)",
         "Jabón negro 100% natural de oliva y eucalipto (Savon Beldi)",
         "Exfoliación tradicional con guante Kessa y enjuague cálido",
         "Descanso con té a la menta en el patio tras la sesión",
       ],
     },
-    image: "/images/items/wellness-hammam.jpg",
+    image: "/images/wellness/hammam.jpg",
   },
   {
     id: "wellness-massage",
@@ -577,47 +698,47 @@ export const wellnessList: WellnessItem[] = [
       es: "Masaje Relajante",
     },
     tagline: {
-      en: "Full-Body Warm Argan & Essential Oil Therapy",
-      fr: "Soin Corps Complet à l'Huile d'Argan Tiède",
-      es: "Terapia Corporal Completa con Aceite de Argán Tibio",
+      en: "In-Room Warm Argan & Essential Oil Therapy",
+      fr: "Soin Relaxant en Chambre à l'Huile d'Argan Tiède",
+      es: "Terapia Relajante con Aceite de Argán Tibio",
     },
     priceMad: 200,
     duration: {
-      en: "60 min Session",
-      fr: "Séance 60 min",
-      es: "Sesión de 60 min",
+      en: "30 min",
+      fr: "30 min",
+      es: "30 min",
     },
     description: {
-      en: "Soothing full-body massage with natural Moroccan oils to relieve tension and restore energy.",
-      fr: "Massage corporel complet et apaisant aux huiles naturelles du Maroc pour dénouer les tensions et restaurer l'énergie.",
-      es: "Reconfortante masaje de cuerpo completo con aceites naturales de Marruecos para aliviar la tensión y renovar la energía.",
+      en: "30-minute soothing relaxing massage in the privacy and comfort of your Riad suite with natural Moroccan oils to relieve tension and restore energy.",
+      fr: "Massage relaxant et apaisant de 30 minutes dans le confort et l'intimité de votre chambre aux huiles naturelles du Maroc pour dénouer les tensions.",
+      es: "Masaje relajante y reconfortante de 30 minutos en la privacidad de su habitación del Riad con aceites naturales de Marruecos para aliviar la tensión.",
     },
     longDescription: {
-      en: "Unwind in a serene, candlelit room at Riad Sidi Ayoub with a 60-minute full-body relaxing massage. Using pure, lightly warmed Moroccan argan oil delicately scented with orange blossom, our therapist employs slow, flowing strokes to soothe tired legs from walking the Medina, release shoulder and back tension, and restore deep mental calm.",
-      fr: "Accordez-vous une heure de lâcher-prise absolu au Riad Sidi Ayoub grâce à notre massage relaxant du corps entier. Réalisé avec une huile d'argan pure du Maroc légèrement tiédie et délicatement parfumée à la fleur d'oranger, ce soin aux mouvements amples et fluides défatigue les jambes après vos promenades dans la Médina, dénoue le dos et apaise profondément l'esprit.",
-      es: "Disfrute de una hora de desconexión total en Riad Sidi Ayoub con nuestro masaje relajante de cuerpo completo. Realizado con aceite de argán puro de Marruecos ligeramente tibio y perfumado con flor de azahar, este tratamiento de movimientos suaves y envolventes alivia el cansancio de las piernas tras caminar por la Medina, libera la espalda yAquieta la mente.",
+      en: "Unwind in the privacy and comfort of your traditional Riad suite with a 30-minute relaxing massage on a professional portable massage table. Using pure, lightly warmed Moroccan argan oil delicately scented with orange blossom, our certified female therapist employs slow, flowing strokes to soothe tired legs from walking the Medina, release shoulder and back tension, and restore deep mental calm.",
+      fr: "Accordez-vous 30 minutes de lâcher-prise absolu dans l'intimité de votre chambre au Riad Sidi Ayoub grâce à notre massage relaxant sur table de massage professionnelle. Réalisé par notre praticienne avec une huile d'argan pure du Maroc légèrement tiédie et délicatement parfumée à la fleur d'oranger, ce soin défatigue les jambes et apaise profondément l'esprit.",
+      es: "Disfrute de 30 minutos de desconexión total en la tranquilidad de su habitación en Riad Sidi Ayoub con nuestro masaje relajante en camilla profesional. Realizado con aceite de argán puro de Marruecos ligeramente tibio y perfumado con flor de azahar, este tratamiento alivia el cansancio de las piernas y libera la espalda.",
     },
     highlights: {
       en: [
-        "60-minute full-body massage tailored to your preferred pressure",
+        "30-minute relaxing massage in the comfort and privacy of your Riad room (200 MAD)",
         "Pure organic Moroccan Argan oil infused with orange blossom",
         "Focus on tired legs, feet, shoulders, and lower back after Medina walks",
         "Serene atmosphere followed by soothing herbal infusion",
       ],
       fr: [
-        "Massage complet de 60 minutes adapté à la pression de votre choix",
+        "Massage relaxant de 30 minutes dans l'intimité de votre chambre au Riad (200 MAD)",
         "Huile d'Argan biologique du Maroc parfumée à la fleur d'oranger",
         "Soin idéal pour délasser les jambes, les épaules et le dos",
         "Atmosphère calme suivie d'une infusion relaxante au patio",
       ],
       es: [
-        "Masaje corporal de 60 minutos adaptado a su presión preferida",
+        "Masaje relajante de 30 minutos en la comodidad de su habitación (200 MAD)",
         "Aceite de Argán orgánico de Marruecos con esencia de azahar",
         "Especial atención a piernas cansadas, hombros y espalda",
         "Ambiente sereno seguido de una infusión relajante en el patio",
       ],
     },
-    image: "/images/items/wellness-massage.jpg",
+    image: "/images/wellness/room-massage.jpg",
   },
 ];
 
@@ -1295,6 +1416,7 @@ export const uiTranslations = {
     heroTitle: "Quiet Hospitality in the Heart of Marrakech",
     heroSubtitle:
       "Explore our homemade Moroccan menus, traditional Hammam & massage treatments, and private or shared excursions. Reserve effortlessly via WhatsApp.",
+    tabWelcomeLalla: "Welcome & Lalla",
     tabMenu: "Dining & Menu",
     tabWellness: "Hammam & Massage",
     tabExcursions: "Excursions",
@@ -1337,6 +1459,7 @@ export const uiTranslations = {
     wellnessSectionTitle: "Hammam & Massage",
     wellnessSectionSubtitle:
       "Return from the bustle of the Medina souks to the calm sanctuary of Riad Sidi Ayoub.",
+    wellnessOpeningHours: "Open daily: 10:00 AM – 4:00 PM",
     wellnessRuleText:
       "Advance Booking Rule: Must be booked at least 1 day in advance.",
     comboBadge: "Signature Wellness Offer • Save 50 MAD",
@@ -1358,10 +1481,10 @@ export const uiTranslations = {
     modalGroup: "Group",
     modalPrivate: "Private",
     modalHours: "Duration (Hours)",
-    modalName: "Guest Name",
-    modalNamePlaceholder: "Your full name",
-    modalRoom: "Room Number",
-    modalRoomPlaceholder: "e.g. Room 3",
+    modalName: "Your Name",
+    modalNamePlaceholder: "Your Name",
+    modalRoom: "Room / Suite (Optional)",
+    modalRoomPlaceholder: "Select your room (Optional)",
     modalDate: "Preferred Date",
     modalTime: "Preferred Time",
     modalGuests: "Number of Guests",
@@ -1371,11 +1494,29 @@ export const uiTranslations = {
     modalDinnerReminder:
       "Reminder: Dinner must be booked before 12:00 PM (noon). Served daily from 6:00 PM to 8:00 PM.",
     modalWellnessReminder:
-      "Reminder: Hammam and Massage treatments must be booked at least 1 day in advance.",
+      "Open daily: 10:00 AM – 4:00 PM • Reminder: Hammam and Massage treatments must be booked at least 1 day in advance.",
     modalExcursionReminder:
       "Early breakfast is available at 7:30 AM for morning excursions (takeaway breakfast at 7:00 AM for Ouarzazate).",
     modalSubmit: "Confirm & Book via WhatsApp",
     modalCancel: "Cancel",
+    instagramBtnLabel: "Visit Our Instagram",
+    instagramBannerTag: "@riad.sidi.ayoub • Marrakech",
+    instagramBannerTitle: "Follow Life Inside Riad Sidi Ayoub",
+    instagramBannerDesc:
+      "Discover daily moments from our courtyard patio, freshly simmered tagines, rooftop sunsets, and Lalla's favorite sunny spots on our official Instagram.",
+    guestbookTitle: "Voice of Our Guests",
+    guestbookSubtitle:
+      "Share a favorite memory from your stay at Riad Sidi Ayoub — whether it's morning mint tea in the patio, a relaxing Hammam, or a visit from Lalla.",
+    guestbookWallTitle: "Wall of Memories",
+    guestbookNameLabel: "Your Name",
+    guestbookNamePlaceholder: "Your Name",
+    guestbookNoteLabel: "Your memory, note, or review",
+    guestbookNotePlaceholder:
+      "Tell us about your stay, Lalla the cat, the hammam, or your favorite dish...",
+    guestbookPhotoLabel: "Add a photo of your stay (Optional)",
+    guestbookSubmitBtn: "Post Memory",
+    guestbookSuccessMsg:
+      "Thank you! Your memory has been pinned to our Wall of Memories.",
   },
   fr: {
     riadName: "Riad Sidi Ayoub",
@@ -1383,6 +1524,7 @@ export const uiTranslations = {
     heroTitle: "L'Élégance Discrète au Cœur de Marrakech",
     heroSubtitle:
       "Découvrez nos menus marocains faits maison, nos soins traditionnels Hammam & massage, ainsi que nos excursions. Réservez simplement via WhatsApp.",
+    tabWelcomeLalla: "Accueil & Lalla",
     tabMenu: "Restauration & Menu",
     tabWellness: "Hammam & Massage",
     tabExcursions: "Excursions",
@@ -1425,6 +1567,7 @@ export const uiTranslations = {
     wellnessSectionTitle: "Hammam & Massage",
     wellnessSectionSubtitle:
       "Après l'effervescence des souks de la Médina, retrouvez la sérénité absolue du Riad Sidi Ayoub.",
+    wellnessOpeningHours: "Ouvert tous les jours : 10h00 – 16h00",
     wellnessRuleText:
       "Règle de réservation : Doit être réservé au moins 1 jour à l'avance.",
     comboBadge: "Offre Signature Bien-Être • Économisez 50 MAD",
@@ -1446,10 +1589,10 @@ export const uiTranslations = {
     modalGroup: "Groupe",
     modalPrivate: "Privé",
     modalHours: "Durée (Heures)",
-    modalName: "Nom du client",
-    modalNamePlaceholder: "Votre nom complet",
-    modalRoom: "Numéro de chambre",
-    modalRoomPlaceholder: "ex. Chambre 3",
+    modalName: "Votre Nom",
+    modalNamePlaceholder: "Votre Nom",
+    modalRoom: "Chambre / Suite (Optionnel)",
+    modalRoomPlaceholder: "Choisissez votre chambre (Optionnel)",
     modalDate: "Date souhaitée",
     modalTime: "Heure souhaitée",
     modalGuests: "Nombre de personnes",
@@ -1459,11 +1602,29 @@ export const uiTranslations = {
     modalDinnerReminder:
       "Rappel : Le dîner doit être réservé avant 12h00 (midi). Servi tous les jours de 18h00 à 20h00.",
     modalWellnessReminder:
-      "Rappel : Le Hammam et le massage doivent être réservés au moins 1 jour à l'avance.",
+      "Ouvert tous les jours : 10h00 – 16h00 • Rappel : Le Hammam et le massage doivent être réservés au moins 1 jour à l'avance.",
     modalExcursionReminder:
       "Un petit-déjeuner anticipé est disponible à 07h30 pour les excursions matinales (à emporter à 07h00 pour Ouarzazate).",
     modalSubmit: "Confirmer & Réserver sur WhatsApp",
     modalCancel: "Annuler",
+    instagramBtnLabel: "Visiter Notre Instagram",
+    instagramBannerTag: "@riad.sidi.ayoub • Marrakech",
+    instagramBannerTitle: "Suivez la Vie au Riad Sidi Ayoub",
+    instagramBannerDesc:
+      "Découvrez en images l'atmosphère paisible de notre patio, nos tajines mijotés maison et les siestes au soleil de Lalla sur notre compte Instagram officiel.",
+    guestbookTitle: "Livre d'Or de Nos Hôtes",
+    guestbookSubtitle:
+      "Partagez un souvenir de votre séjour au Riad Sidi Ayoub — un thé à la menthe dans le patio, un soin au Hammam ou une rencontre avec Lalla.",
+    guestbookWallTitle: "Mur des Souvenirs",
+    guestbookNameLabel: "Votre Nom",
+    guestbookNamePlaceholder: "Votre Nom",
+    guestbookNoteLabel: "Votre souvenir, note ou avis",
+    guestbookNotePlaceholder:
+      "Partagez votre expérience, vos moments avec Lalla, le hammam ou votre plat préféré...",
+    guestbookPhotoLabel: "Ajouter une photo de votre séjour (Optionnel)",
+    guestbookSubmitBtn: "Publier le Souvenir",
+    guestbookSuccessMsg:
+      "Merci ! Votre souvenir a été ajouté au Mur des Souvenirs.",
   },
   es: {
     riadName: "Riad Sidi Ayoub",
@@ -1471,6 +1632,7 @@ export const uiTranslations = {
     heroTitle: "Hospitalidad Serena en el Corazón de Marrakech",
     heroSubtitle:
       "Explore nuestros menús marroquíes caseros, tratamientos tradicionales de Hammam y masaje, y excursiones seleccionadas. Reserve directamente por WhatsApp.",
+    tabWelcomeLalla: "Bienvenida y Lalla",
     tabMenu: "Restaurante y Menú",
     tabWellness: "Hammam y Masaje",
     tabExcursions: "Excursiones",
@@ -1513,6 +1675,7 @@ export const uiTranslations = {
     wellnessSectionTitle: "Hammam y Masaje",
     wellnessSectionSubtitle:
       "Tras recorrer los zocos de la Medina, regrese a la calma absoluta de Riad Sidi Ayoub.",
+    wellnessOpeningHours: "Abierto todos los días: 10:00 – 16:00",
     wellnessRuleText:
       "Norma de reserva: Debe reservarse con al menos 1 día de antelación.",
     comboBadge: "Oferta Especial Bienestar • Ahorre 50 MAD",
@@ -1534,10 +1697,10 @@ export const uiTranslations = {
     modalGroup: "Grupo",
     modalPrivate: "Privado",
     modalHours: "Duración (Horas)",
-    modalName: "Nombre del Huésped",
-    modalNamePlaceholder: "Su nombre completo",
-    modalRoom: "Número de Habitación",
-    modalRoomPlaceholder: "ej. Habitación 3",
+    modalName: "Tu Nombre",
+    modalNamePlaceholder: "Tu Nombre",
+    modalRoom: "Habitación / Suite (Opcional)",
+    modalRoomPlaceholder: "Selecciona tu habitación (Opcional)",
     modalDate: "Fecha Preferida",
     modalTime: "Hora Preferida",
     modalGuests: "Número de Personas",
@@ -1547,10 +1710,28 @@ export const uiTranslations = {
     modalDinnerReminder:
       "Recordatorio: La cena debe reservarse antes de las 12:00 PM (mediodía). Servida de 6:00 PM a 8:00 PM.",
     modalWellnessReminder:
-      "Recordatorio: El Hammam y el masaje deben reservarse con al menos 1 día de antelación.",
+      "Abierto todos los días: 10:00 – 16:00 • Recordatorio: El Hammam y el masaje deben reservarse con al menos 1 día de antelación.",
     modalExcursionReminder:
       "Desayuno temprano disponible a las 7:30 AM para excursiones matutinas (para llevar a las 7:00 AM hacia Ouarzazate).",
     modalSubmit: "Confirmar y Reservar por WhatsApp",
     modalCancel: "Cancelar",
+    instagramBtnLabel: "Visitar Nuestro Instagram",
+    instagramBannerTag: "@riad.sidi.ayoub • Marrakech",
+    instagramBannerTitle: "Siga el Día a Día en Riad Sidi Ayoub",
+    instagramBannerDesc:
+      "Descubra momentos cotidianos de nuestro patio, nuestros tajines caseros y los rincones soleados favoritos de Lalla en nuestro Instagram oficial.",
+    guestbookTitle: "Voces de Nuestros Huéspedes",
+    guestbookSubtitle:
+      "Comparta un recuerdo especial de su estancia en Riad Sidi Ayoub: el té en el patio, el Hammam o un momento con Lalla.",
+    guestbookWallTitle: "Muro de los Recuerdos",
+    guestbookNameLabel: "Tu Nombre",
+    guestbookNamePlaceholder: "Tu Nombre",
+    guestbookNoteLabel: "Tu recuerdo, nota o reseña",
+    guestbookNotePlaceholder:
+      "Cuéntenos sobre su estancia, la gatita Lalla, el hammam o su plato favorito...",
+    guestbookPhotoLabel: "Añadir una foto de tu estancia (Opcional)",
+    guestbookSubmitBtn: "Publicar Recuerdo",
+    guestbookSuccessMsg:
+      "¡Gracias! Su recuerdo se ha añadido al Muro de los Recuerdos.",
   },
 };

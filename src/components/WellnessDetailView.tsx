@@ -13,6 +13,9 @@ import {
   Mail,
   MapPin,
   ArrowRight,
+  Menu,
+  X,
+  Instagram,
 } from "lucide-react";
 import {
   Language,
@@ -23,6 +26,7 @@ import {
   WHATSAPP_NUMBER,
   CONTACT_PHONE_DISPLAY,
   CONTACT_EMAIL,
+  INSTAGRAM_URL,
 } from "@/data/conciergeData";
 import BookingModal, { BookingPayload } from "@/components/BookingModal";
 
@@ -37,6 +41,7 @@ export default function WellnessDetailView({
 
   const [lang, setLang] = useState<Language>("en");
   const [modalOpen, setModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [bookingPayload, setBookingPayload] = useState<BookingPayload | null>(
     null
   );
@@ -50,7 +55,7 @@ export default function WellnessDetailView({
   const openWellnessBooking = (item: WellnessItem) => {
     setBookingPayload({
       kind: "wellness",
-      title: `${item.name[lang]} — ${item.priceMad} MAD`,
+      title: `${item.name[lang]} (${item.duration[lang]} — ${item.priceMad} MAD)`,
       subtitle: item.tagline[lang],
       wellnessItem: item,
     });
@@ -61,7 +66,7 @@ export default function WellnessDetailView({
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans">
       {/* STICKY HEADER */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-[#E6E4DF]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
           <Link
             href="/"
             className="font-serif text-2xl sm:text-[26px] font-semibold tracking-tight text-[#1A1A1A]"
@@ -69,38 +74,56 @@ export default function WellnessDetailView({
             {t.riadName}
           </Link>
 
-          <div
-            className="flex items-center text-xs font-medium tracking-wider text-[#63615C]"
-            role="group"
-            aria-label="Language Switcher"
-          >
-            {(["en", "fr", "es"] as Language[]).map((code, index) => {
-              const active = lang === code;
-              return (
-                <React.Fragment key={code}>
-                  {index > 0 && (
-                    <span className="mx-2 text-[#E6E4DF] select-none">|</span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setLang(code)}
-                    className={`px-1.5 py-1 transition-colors ${
-                      active
-                        ? "text-[#1A1A1A] font-semibold underline underline-offset-4"
-                        : "text-[#63615C] hover:text-[#1A1A1A]"
-                    }`}
-                  >
-                    {code.toUpperCase()}
-                  </button>
-                </React.Fragment>
-              );
-            })}
+          <div className="flex items-center gap-3">
+            <div
+              className="flex items-center text-xs font-medium tracking-wider text-[#63615C]"
+              role="group"
+              aria-label="Language Switcher"
+            >
+              {(["en", "fr", "es"] as Language[]).map((code, index) => {
+                const active = lang === code;
+                return (
+                  <React.Fragment key={code}>
+                    {index > 0 && (
+                      <span className="mx-1.5 sm:mx-2 text-[#E6E4DF] select-none">
+                        |
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setLang(code)}
+                      className={`px-1.5 py-1 transition-colors ${
+                        active
+                          ? "text-[#1A1A1A] font-semibold underline underline-offset-4"
+                          : "text-[#63615C] hover:text-[#1A1A1A]"
+                      }`}
+                    >
+                      {code.toUpperCase()}
+                    </button>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-lg border border-[#E6E4DF] bg-[#FAF9F6] text-[#1A1A1A] hover:border-[#9A5B3A] transition-colors"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Sub-navigation between Concierge & Wellness pages */}
-        <nav className="bg-white border-t border-[#E6E4DF]">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 overflow-x-auto no-scrollbar h-11 text-xs sm:text-sm">
+        {/* Desktop Sub-navigation */}
+        <nav className="hidden md:block bg-white border-t border-[#E6E4DF]">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4 h-11 text-xs sm:text-sm">
             <Link
               href="/#wellness"
               className="inline-flex items-center gap-1.5 text-[#63615C] hover:text-[#1A1A1A] font-medium whitespace-nowrap transition-colors"
@@ -129,6 +152,42 @@ export default function WellnessDetailView({
             </div>
           </div>
         </nav>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden bg-white border-t border-[#E6E4DF] px-4 py-4 shadow-lg space-y-1.5">
+            <Link
+              href="/#wellness"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#9A5B3A] hover:bg-[#FAF9F6]"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>{t.backToConcierge}</span>
+            </Link>
+            {allWellnessItems.map((item) => (
+              <Link
+                key={item.id}
+                href={`/wellness/${item.slug}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-3.5 py-2.5 rounded-lg text-sm font-medium text-[#1A1A1A] hover:bg-[#FAF9F6]"
+              >
+                {item.name[lang]} ({item.priceMad} MAD)
+              </Link>
+            ))}
+            <div className="pt-2 border-t border-[#E6E4DF]">
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-lg bg-[#9A5B3A] text-white text-xs font-medium"
+              >
+                <Instagram className="w-4 h-4" />
+                <span>{t.instagramBtnLabel}</span>
+              </a>
+            </div>
+          </nav>
+        )}
       </header>
 
       {/* MAIN DETAIL CONTENT */}
@@ -168,8 +227,8 @@ export default function WellnessDetailView({
                         {currentItem.originalPriceMad} MAD
                       </span>
                     )}
-                    <span className="font-serif text-3xl font-semibold text-[#1A1A1A]">
-                      {currentItem.priceMad} MAD
+                    <span className="font-serif text-2xl sm:text-3xl font-semibold text-[#1A1A1A]">
+                      {currentItem.duration[lang]} — {currentItem.priceMad} MAD
                     </span>
                   </div>
                 </div>
@@ -195,10 +254,16 @@ export default function WellnessDetailView({
                   </ul>
                 </div>
 
-                {/* 1-Day Advance Booking Notice */}
-                <div className="p-3.5 rounded-lg bg-[#FAF9F6] border border-[#E6E4DF] flex items-start gap-2.5 text-xs text-[#1A1A1A]">
-                  <Info className="w-4 h-4 text-[#9A5B3A] shrink-0 mt-0.5" />
-                  <span>{t.wellnessRuleText}</span>
+                {/* Opening Hours & 1-Day Advance Booking Notice */}
+                <div className="p-3.5 rounded-lg bg-[#FAF9F6] border border-[#E6E4DF] space-y-2 text-xs text-[#1A1A1A]">
+                  <div className="flex items-center gap-2.5 font-semibold">
+                    <Clock className="w-4 h-4 text-[#9A5B3A] shrink-0" />
+                    <span>{t.wellnessOpeningHours}</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Info className="w-4 h-4 text-[#9A5B3A] shrink-0 mt-0.5" />
+                    <span>{t.wellnessRuleText}</span>
+                  </div>
                 </div>
               </div>
 
