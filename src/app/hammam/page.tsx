@@ -1,5 +1,5 @@
-import WellnessDetailPage from "../wellness/[slug]/page";
+import WellnessDetailView from "@/components/WellnessDetailView";
 
 export default function HammamDirectPage() {
-  return <WellnessDetailPage defaultSlug="hammam" />;
+  return <WellnessDetailView defaultSlug="hammam" />;
 }

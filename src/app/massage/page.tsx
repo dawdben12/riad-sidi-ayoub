@@ -1,5 +1,5 @@
-import WellnessDetailPage from "../wellness/[slug]/page";
+import WellnessDetailView from "@/components/WellnessDetailView";
 
 export default function MassageDirectPage() {
-  return <WellnessDetailPage defaultSlug="massage" />;
+  return <WellnessDetailView defaultSlug="massage" />;
 }
