@@ -17,6 +17,8 @@ import {
   Send,
   Menu,
   X,
+  Users,
+  MessageCircle,
 } from "lucide-react";
 import {
   Language,
@@ -36,6 +38,7 @@ import {
   CONTACT_PHONE_DISPLAY,
   CONTACT_EMAIL,
   INSTAGRAM_URL,
+  RIAD_ROOMS,
   DishItem,
   DrinkItem,
   WellnessItem,
@@ -50,6 +53,11 @@ export default function ConciergePage() {
   const [bookingPayload, setBookingPayload] = useState<BookingPayload | null>(
     null
   );
+
+  // Dining section quick Guest Count state (1..5 or Group > 5)
+  const [diningGuestsCount, setDiningGuestsCount] = useState<number>(2);
+  const [diningIsGroupOver5, setDiningIsGroupOver5] = useState<boolean>(false);
+  const [diningGroupRoom, setDiningGroupRoom] = useState<string>("");
 
   // Guestbook state: only real user-submitted posts + 1 official Riad Sidi Ayoub welcome post
   const [userGuestbookEntries, setUserGuestbookEntries] = useState<
@@ -142,6 +150,8 @@ export default function ConciergePage() {
     starterId?: string;
     mainId?: string;
     dessertId?: string;
+    guestsCount?: number;
+    isGroupOver5?: boolean;
   }) => {
     setBookingPayload({
       kind: "menu_set_1",
@@ -150,6 +160,8 @@ export default function ConciergePage() {
       preselectedStarterId: opts?.starterId,
       preselectedMainId: opts?.mainId,
       preselectedDessertId: opts?.dessertId,
+      initialGuestsCount: opts?.guestsCount ?? diningGuestsCount,
+      initialIsGroupOver5: opts?.isGroupOver5 ?? diningIsGroupOver5,
     });
     setModalOpen(true);
   };
@@ -158,6 +170,8 @@ export default function ConciergePage() {
     starterId?: string;
     mainId?: string;
     dessertId?: string;
+    guestsCount?: number;
+    isGroupOver5?: boolean;
   }) => {
     setBookingPayload({
       kind: "menu_set_2",
@@ -166,6 +180,8 @@ export default function ConciergePage() {
       preselectedStarterId: opts?.starterId,
       preselectedMainId: opts?.mainId,
       preselectedDessertId: opts?.dessertId,
+      initialGuestsCount: opts?.guestsCount ?? diningGuestsCount,
+      initialIsGroupOver5: opts?.isGroupOver5 ?? diningIsGroupOver5,
     });
     setModalOpen(true);
   };
@@ -176,8 +192,36 @@ export default function ConciergePage() {
       title: `${drink.name[lang]} — ${drink.priceMad} MAD`,
       subtitle: drink.originalFr,
       drinkItem: drink,
+      initialGuestsCount: diningGuestsCount,
+      initialIsGroupOver5: diningIsGroupOver5,
     });
     setModalOpen(true);
+  };
+
+  const buildInlineGroupWhatsAppUrl = (): string => {
+    const lines: string[] = [];
+    if (lang === "fr") {
+      lines.push(`*Riad Sidi Ayoub — Demande Repas de Groupe (5+ Convives)*`);
+      lines.push(
+        `Bonjour, nous sommes un groupe de plus de 5 personnes et souhaitons organiser notre commande avec le Riad.`
+      );
+      if (diningGroupRoom) lines.push(`Chambre : ${diningGroupRoom}`);
+    } else if (lang === "es") {
+      lines.push(`*Riad Sidi Ayoub — Solicitud de Grupo (5+ Huéspedes)*`);
+      lines.push(
+        `Hola, somos un grupo de más de 5 personas y nos gustaría organizar nuestro pedido directamente con el Riad.`
+      );
+      if (diningGroupRoom) lines.push(`Habitación: ${diningGroupRoom}`);
+    } else {
+      lines.push(`*Riad Sidi Ayoub — Group Dining Request (5+ Guests)*`);
+      lines.push(
+        `Hello, we are a group of more than 5 guests and would like to arrange our dinner/menu order directly with the Riad.`
+      );
+      if (diningGroupRoom) lines.push(`Room: ${diningGroupRoom}`);
+    }
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      lines.join("\n")
+    )}`;
   };
 
   const openWellnessBooking = (item: WellnessItem) => {
@@ -567,6 +611,113 @@ export default function ConciergePage() {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Guest Count Selector Bar (1, 2, 3, 4, 5, or More than 5 Group) */}
+          <div className="rounded-xl bg-white border border-[#E6E4DF] p-6 shadow-quiet space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="font-serif text-xl font-semibold text-[#1A1A1A] flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[#9A5B3A]" />
+                  <span>{t.quickGuestSelectorTitle}</span>
+                </h3>
+                <p className="text-xs text-[#63615C] mt-0.5">
+                  {t.quickGuestSelectorSub}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2.5">
+              {([1, 2, 3, 4, 5] as const).map((num) => {
+                const active = !diningIsGroupOver5 && diningGuestsCount === num;
+                return (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => {
+                      setDiningIsGroupOver5(false);
+                      setDiningGuestsCount(num);
+                      openMenuSet1Booking({
+                        guestsCount: num,
+                        isGroupOver5: false,
+                      });
+                    }}
+                    className={`py-2.5 px-3 rounded-lg border text-xs sm:text-sm font-semibold transition-all ${
+                      active
+                        ? "border-[#1A1A1A] bg-[#1A1A1A] text-white shadow-sm"
+                        : "border-[#E6E4DF] bg-[#FAF9F6] text-[#1A1A1A] hover:bg-white hover:border-[#9A5B3A]"
+                    }`}
+                  >
+                    {num} {t.guestLabel}
+                    {num > 1 ? "s" : ""}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setDiningIsGroupOver5(true);
+                  setDiningGuestsCount(6);
+                }}
+                className={`col-span-3 sm:col-span-1 py-2.5 px-3 rounded-lg border text-xs sm:text-sm font-semibold transition-all ${
+                  diningIsGroupOver5
+                    ? "border-[#9A5B3A] bg-[#9A5B3A] text-white shadow-sm"
+                    : "border-[#E6E4DF] bg-[#FAF9F6] text-[#1A1A1A] hover:bg-white hover:border-[#9A5B3A]"
+                }`}
+              >
+                {t.moreThan5Label}
+              </button>
+            </div>
+
+            {/* Automatic Group Notice when "More than 5 (Group)" is selected */}
+            {diningIsGroupOver5 && (
+              <div className="rounded-xl bg-[#FAF9F6] border-2 border-[#9A5B3A]/40 p-5 space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#9A5B3A]/15 text-[#9A5B3A] flex items-center justify-center shrink-0 mt-0.5">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className="font-serif text-lg font-semibold text-[#1A1A1A]">
+                      {t.groupNoticeTitle}
+                    </h4>
+                    <p className="text-xs sm:text-sm text-[#63615C] leading-relaxed">
+                      {t.groupNoticeText}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+                  <div className="sm:w-64">
+                    <label className="block text-xs font-medium text-[#63615C] mb-1">
+                      {t.modalRoom}
+                    </label>
+                    <select
+                      value={diningGroupRoom}
+                      onChange={(e) => setDiningGroupRoom(e.target.value)}
+                      className="w-full rounded-lg border border-[#E6E4DF] bg-white px-3 py-2.5 text-sm text-[#1A1A1A] focus:border-[#1A1A1A] focus:outline-none"
+                    >
+                      <option value="">{t.modalRoomPlaceholder}</option>
+                      {RIAD_ROOMS.map((room) => (
+                        <option key={room} value={room}>
+                          {room}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <a
+                    href={buildInlineGroupWhatsAppUrl()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 py-2.5 px-5 rounded-lg bg-[#9A5B3A] hover:bg-[#824A2D] text-white text-xs sm:text-sm font-medium inline-flex items-center justify-center gap-2 transition-colors shadow-sm"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>{t.groupWhatsAppBtn}</span>
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Menu Formula Summary Cards (Menu 1: 190 MAD & Menu 2: 320 MAD) */}
